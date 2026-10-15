@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { prisma } from '../db/prisma';
 import { authRoutes } from './auth';
 import { eventRoutes } from './events';
+import { bookingRoutes } from './booking';
 
 export const routes = Router();
 
@@ -16,3 +17,4 @@ routes.get('/health', async (req, res) => {
 
 routes.use('/auth', authRoutes);
 routes.use('/events', eventRoutes);
+routes.use('/', bookingRoutes);
