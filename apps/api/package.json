@@ -8,7 +8,8 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "db:seed:admin": "tsx --env-file=.env prisma/seed-admin.ts"
+    "db:seed:admin": "tsx --env-file=.env prisma/seed-admin.ts",
+    "db:seed:demo": "tsx --env-file=.env prisma/seed-demo.ts"
   },
   "engines": {
     "node": ">=20"
