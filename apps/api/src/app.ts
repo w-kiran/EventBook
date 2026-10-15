@@ -19,5 +19,10 @@ export function createApp() {
     res.status(404).json({ error: { code: 'ROUTE_NOT_FOUND', message: 'Route not found.' } });
   });
 
+    app.use((err: any, req: any, res: any, next: any) => {
+    console.error(err);
+    res.status(err.status || 500).json({ error: { code: 'ERROR', message: 'Something went wrong.' } });
+  });
+  
   return app;
 }
