@@ -7,3 +7,54 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BookingStatus {
+  ACTIVE
+  CANCELLED
+}
+
+model User {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String    @db.VarChar(80)
+  email        String    @unique @db.VarChar(254)
+  passwordHash String
+  role         Role      @default(USER)
+  createdAt    DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime  @default(now()) @updatedAt @db.Timestamptz(3)
+  bookings     Booking[]
+}
+
+model Event {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String    @db.VarChar(120)
+  description String
+  venue       String    @db.VarChar(160)
+  startsAt    DateTime  @db.Timestamptz(3)
+  totalSeats  Int
+  bookedSeats Int       @default(0)
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(3)
+  bookings    Booking[]
+
+  @@index([startsAt, id])
+}
+
+model Booking {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String        @db.Uuid
+  eventId     String        @db.Uuid
+  status      BookingStatus @default(ACTIVE)
+  cancelledAt DateTime?     @db.Timestamptz(3)
+  createdAt   DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime      @default(now()) @updatedAt @db.Timestamptz(3)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  event       Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([eventId, status])
+}
