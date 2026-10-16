@@ -34,6 +34,16 @@ export const requireAuth: RequestHandler = async (req, res, next) => {
   next();
 };
 
+
+// Rejects anyone who is not an admin.
+export const requireAdmin: RequestHandler = (req, res, next) => {
+  if (req.user?.role !== 'ADMIN') {
+    res.status(403).json({ error: { code: 'FORBIDDEN', message: 'Admin access required.' } });
+    return;
+  }
+  next();
+};
+
 // Lets everyone through; fills req.user only if logged in
 export const optionalAuth: RequestHandler = async (req, res, next) => {
   const user = await loadUser(req);
