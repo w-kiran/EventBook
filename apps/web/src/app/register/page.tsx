@@ -1,19 +1,29 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { register } from '@/store/authSlice';
 
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { user, loading } = useAppSelector((state) => state.auth);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace("/");
+    }
+  }, [loading, user, router]);
+
+  if (loading || user) return null;
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
