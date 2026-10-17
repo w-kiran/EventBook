@@ -24,3 +24,12 @@ export type PaginationInfo = {
   totalItems: number;
   totalPages: number;
 };
+
+export type BookingItem = {
+  id: string;
+  status: 'ACTIVE' | 'CANCELLED';
+  createdAt: string;
+  cancelledAt: string | null;
+  canCancel: boolean;
+  event: { id: string; title: string; venue: string; startsAt: string; hasStarted: boolean };
+};
