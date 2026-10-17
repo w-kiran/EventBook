@@ -33,3 +33,11 @@ export type BookingItem = {
   canCancel: boolean;
   event: { id: string; title: string; venue: string; startsAt: string; hasStarted: boolean };
 };
+
+export type AttendeeItem = {
+  bookingId: string;
+  userId: string;
+  name: string;
+  email: string;
+  bookedAt: string;
+};
