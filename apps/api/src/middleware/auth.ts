@@ -34,7 +34,6 @@ export const requireAuth: RequestHandler = async (req, res, next) => {
   next();
 };
 
-
 // Rejects anyone who is not an admin.
 export const requireAdmin: RequestHandler = (req, res, next) => {
   if (req.user?.role !== 'ADMIN') {
